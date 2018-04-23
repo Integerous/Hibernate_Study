@@ -15,7 +15,7 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>  
         <property name="hibernate.current_session_context_class">thread</property>
         
-        <mapping class="com.answeris.hb.entity.Book"/>  
+        <!-- <mapping class="com.answeris.hb.entity.Book"/> -->
     	<!-- <mapping resource="com/notepubs/hb/xml/entity/mapper/Note.xml"/> -->
     </session-factory>  
   

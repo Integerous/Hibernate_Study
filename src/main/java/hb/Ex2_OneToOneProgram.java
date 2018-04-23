@@ -41,8 +41,8 @@ public class Ex2_OneToOneProgram {
 		
 		
 		/*-------부모 레코드도 함께 레코드 삭제하기--------*/
-		BookDetail bookDetail = session.get(BookDetail.class, 38);
-		session.delete(bookDetail);
+		/*BookDetail bookDetail = session.get(BookDetail.class, 38);
+		session.delete(bookDetail);*/
 		
 		
 		/*-------자식 레코드도 함께 레코드 가져오기--------*/
@@ -60,6 +60,14 @@ public class Ex2_OneToOneProgram {
 		/*-------Bi-Directional 제한적으로 cascade 옵션 설정하기--------*/
 			//자식 entity의 부모객체에서 @OneToOne(cascade={CascadeType.DETACH,
 		
+		
+		/*-------자식 레코드만 삭제하기--------*/
+		BookDetail bookDetail = session.get(BookDetail.class, 129);
+		
+		bookDetail.getBook().setBookDetail(null);
+		//부모가 자식을 참조하고있으므로 자식이 삭제되어도 부모가 자동으로 자식의 값이 null이 아니게 한다.
+		//때문에 자식에서.부모를얻고.부모에서 자식의 값을 null로 지정해줌으로써 객체관계를 끊어야한다.
+		session.delete(bookDetail);
 		
 		
 		session.getTransaction().commit();
