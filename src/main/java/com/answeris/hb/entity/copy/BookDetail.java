@@ -1,4 +1,4 @@
-package com.answeris.hb.entity;
+package com.answeris.hb.entity.copy;
 
 import java.util.Date;
 
@@ -19,8 +19,12 @@ public class BookDetail {
 	private int height;
 	private String publisher;
 	private Date pubDate;
-	private int bookId;
+	//참조키 private int bookId;
 	
+	//@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name="bookId")
+	private Book book;
 	
 	
 	public BookDetail() {
@@ -34,11 +38,26 @@ public class BookDetail {
 		this.publisher = publisher;
 	}
 	
+	
+	public BookDetail(int id, int pageCount, int width, int height, String publisher, Date pubDate, Book book) {
+		super();
+		this.id = id;
+		this.pageCount = pageCount;
+		this.width = width;
+		this.height = height;
+		this.publisher = publisher;
+		this.pubDate = pubDate;
+		this.book = book;
+	}
+
+	
+	
+	
 
 	@Override
 	public String toString() {
 		return "BookDetail [id=" + id + ", pageCount=" + pageCount + ", width=" + width + ", height=" + height
-				+ ", publisher=" + publisher + ", pubDate=" + pubDate + "]";
+				+ ", publisher=" + publisher + ", pubDate=" + pubDate + ", book=" + book + "]";
 	}
 
 	
@@ -103,6 +122,14 @@ public class BookDetail {
 	}
 
 
+	public Book getBook() {
+		return book;
+	}
+
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
 	
 	
 	

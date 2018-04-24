@@ -1,4 +1,4 @@
-package com.answeris.hb.entity;
+package com.answeris.hb.entity.copy;
 
 import java.util.Date;
 import java.util.List;
@@ -23,13 +23,27 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //기본키 자동생성하기위해. IDENTITY는 기본키 생성을 데이터베이스에 위임하는 방법. 주로MySQL, PostgresSQL 등에서 사용
 	private int id;
+	
+	//@Column(name="title") //컬럼명과 다를 경우 이거 넣어줘야함
 	private String title;
 	private String coverImg;
 	private String writerId;
 	private Date regDate;
 	private int hit;
+	
 	@Column(name="`order`")
 	private int order;
+	
+	@OneToOne(mappedBy="book", cascade=CascadeType.ALL) // 여기서 book은 BookDetail 엔티티에 있는 private Book book의 book이다. 자식은 참조키가 있지만 부모는 참조키가 없으므로.
+	private BookDetail bookDetail; //자식레코드도 함께 레코드 가져오기 위해서
+	
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="BookNote" //중간테이블이 뭔지 이렇게 알려줘야함
+				, joinColumns= @JoinColumn(name="bookId")
+				, inverseJoinColumns=@JoinColumn(name="noteId")) 
+	private List<Note> notes;
+	
 	
 	
 	public Book() {
@@ -134,6 +148,19 @@ public class Book {
 		this.order = order;
 	}
 
+
+	
+	
+	
+	
+	public BookDetail getBookDetail() {
+		return bookDetail;
+	}
+
+
+	public void setBookDetail(BookDetail bookDetail) {
+		this.bookDetail = bookDetail;
+	}
 	
 	
 	

@@ -1,4 +1,4 @@
-package com.answeris.hb.entity;
+package com.answeris.hb.entity.copy;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Note {
 	
 	@Id
@@ -29,9 +30,22 @@ public class Note {
 	private String content;	
 	private Date regDate;
 	private int hit;
-	@Column(name="`order`")
-	private int order;
 	private boolean pub;
+	
+	/*@Column(name="`order`")
+	private int order;//이대로 두면 쿼리문 만들때 문제 됌
+	private boolean pub;*/
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="note", cascade=CascadeType.ALL)
+	//@Transient
+	List<Comment> comments;
+	
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="BookNote"
+				, joinColumns=@JoinColumn(name="noteId")
+				, inverseJoinColumns=@JoinColumn(name="bookId"))
+	private List<Book> books;
 	
 	
 	public Note() {
@@ -40,33 +54,31 @@ public class Note {
 
 
 	//값을 담을 때 사용하는 최소한의 데이터
-
-	public Note(int id, String title, String content, Date regDate, int hit, int order, boolean pub) {
+	public Note(int id, String title, String content, Date regDate, int hit, boolean pub) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.regDate = regDate;
 		this.hit = hit;
-		this.order = order;
 		this.pub = pub;
 	}
-
+	
 
 	@Override
 	public String toString() {
 		return "Note [id=" + id + ", title=" + title + ", content=" + content + ", regDate=" + regDate + ", hit=" + hit
-				+ ", order=" + order + ", pub=" + pub + "]";
+				+ ", pub=" + pub + "]";
 	}
 
 
-	public int getOrder() {
-		return order;
+	public List<Book> getBooks() {
+		return books;
 	}
 
 
-	public void setOrder(int order) {
-		this.order = order;
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}
 
 
@@ -127,6 +139,16 @@ public class Note {
 
 	public void setPub(boolean pub) {
 		this.pub = pub;
+	}
+
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 

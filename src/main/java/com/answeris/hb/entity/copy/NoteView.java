@@ -1,4 +1,4 @@
-package com.answeris.hb.entity;
+package com.answeris.hb.entity.copy;
 
 import java.util.Date;
 
@@ -29,7 +29,7 @@ public class NoteView extends Note{
 		this.commentCount = commentCount;
 	}
 
-	
+
 
 
 
